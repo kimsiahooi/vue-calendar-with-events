@@ -89,7 +89,7 @@ export default {
             return { ...calendarDay, tasks: tempTasks };
           }
         });
-        // localStorage.setItem('oks-calendar', JSON.stringify(tempCalendar));
+        localStorage.setItem('oks-calendar', JSON.stringify(tempCalendar));
         this.calendarDays = tempCalendar;
       } else {
         alert('Please enter a valid date and description!');
@@ -107,7 +107,7 @@ export default {
             return calendarDay;
           }
         });
-        // localStorage.setItem('oks-calendar', JSON.stringify(tempCalendar));
+        localStorage.setItem('oks-calendar', JSON.stringify(tempCalendar));
         this.calendarDays = tempCalendar;
       }
     },
@@ -127,33 +127,37 @@ export default {
             return calendarDay;
           }
         });
-        // localStorage.setItem('oks-calendar', JSON.stringify(tempCalendar));
+        localStorage.setItem('oks-calendar', JSON.stringify(tempCalendar));
         this.calendarDays = tempCalendar;
       }
     },
   },
   mounted() {
-    const currentDate = new Date();
-    const month = currentDate.getMonth();
-    const year = currentDate.getFullYear();
+    if (!localStorage.getItem('oks-calendar')) {
+      const currentDate = new Date();
+      const month = currentDate.getMonth();
+      const year = currentDate.getFullYear();
 
-    const firstDayOfMonth = new Date(year, month, 1);
-    const lastDayOfMonth = new Date(year, month + 1, 0);
+      const firstDayOfMonth = new Date(year, month, 1);
+      const lastDayOfMonth = new Date(year, month + 1, 0);
 
-    const firstDayOfWeek = firstDayOfMonth.getDay();
-    const totalDays = lastDayOfMonth.getDate();
+      const firstDayOfWeek = firstDayOfMonth.getDay();
+      const totalDays = lastDayOfMonth.getDate();
 
-    const temCalendars = [];
+      const temCalendars = [];
 
-    for (let i = 0; i < firstDayOfWeek; i++) {
-      temCalendars.push({ id: nanoid(), blank: true });
+      for (let i = 0; i < firstDayOfWeek; i++) {
+        temCalendars.push({ id: nanoid(), blank: true });
+      }
+
+      for (let day = 1; day <= totalDays; day++) {
+        temCalendars.push({ id: nanoid(), blank: false, text: day, tasks: [] });
+      }
+      localStorage.setItem('oks-calendar', JSON.stringify(tempCalendar));
+      this.calendarDays = temCalendars;
+    } else {
+      this.calendarDays = JSON.parse(localStorage.getItem('oks-calendar'));
     }
-
-    for (let day = 1; day <= totalDays; day++) {
-      temCalendars.push({ id: nanoid(), blank: false, text: day, tasks: [] });
-    }
-
-    this.calendarDays = temCalendars;
   },
 };
 </script>
