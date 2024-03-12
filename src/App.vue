@@ -144,17 +144,17 @@ export default {
       const firstDayOfWeek = firstDayOfMonth.getDay();
       const totalDays = lastDayOfMonth.getDate();
 
-      const temCalendars = [];
+      const tempCalendars = [];
 
       for (let i = 0; i < firstDayOfWeek; i++) {
-        temCalendars.push({ id: nanoid(), blank: true });
+        tempCalendars.push({ id: nanoid(), blank: true });
       }
 
       for (let day = 1; day <= totalDays; day++) {
-        temCalendars.push({ id: nanoid(), blank: false, text: day, tasks: [] });
+        tempCalendars.push({ id: nanoid(), blank: false, text: day, tasks: [] });
       }
-      localStorage.setItem('oks-calendar', JSON.stringify(tempCalendar));
-      this.calendarDays = temCalendars;
+      localStorage.setItem('oks-calendar', JSON.stringify(tempCalendars));
+      this.calendarDays = tempCalendars;
     } else {
       this.calendarDays = JSON.parse(localStorage.getItem('oks-calendar'));
     }
